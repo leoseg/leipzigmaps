@@ -5,12 +5,11 @@ import slugify from '@sindresorhus/slugify';
 const __dirname = new URL('.', import.meta.url).pathname;
 
 const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
-const prefixOpenData = `https://statistik.leipzig.de/opendata/api/values?format=json`
 const urls = [
   `${prefix}&kategorie_nr=2&rubrik_nr=4&periode=y`, // Einwohner mit Migrationshintergund
   `${prefix}&kategorie_nr=2&rubrik_nr=8&periode=y`, // Einwohnerdichte
   `${prefix}&kategorie_nr=7&rubrik_nr=2&periode=y`, // Arbeitslose
-  `${prefixOpenData}&kategorie_nr=4&rubrik_nr=4&periode=y`, // Bedarfsgemeinschaften
+ // `${prefix}&kategorie_nr=4&rubrik_nr=4&periode=y`, // Bedarfsgemeinschaften
   `${prefix}&kategorie_nr=12&rubrik_nr=1&periode=y`, // Straftaten
   `${prefix}&kategorie_nr=4&rubrik_nr=5&periode=y`, // Ärzte
   `${prefix}&kategorie_nr=6&rubrik_nr=4&periode=y`, // Wohnungsbestand

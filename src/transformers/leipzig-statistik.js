@@ -5,7 +5,7 @@ const __dirname = new URL('.', import.meta.url).pathname;
 const files = [
   'leipzig-aerzte.json',
   'leipzig-arbeitslose-insgesamt.json',
-  'leipzig-bedarfsgemeinschaften-insgesamt.json',
+//  'leipzig-bedarfsgemeinschaften.json',
   'leipzig-einwohner-insgesamt.json',
   'leipzig-einwohnerdichte.json',
   'leipzig-gesamtflaeche.json',
