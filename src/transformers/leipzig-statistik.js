@@ -5,17 +5,18 @@ const __dirname = new URL('.', import.meta.url).pathname;
 const files = [
   'leipzig-aerzte.json',
   'leipzig-arbeitslose-insgesamt.json',
-  'leipzig-bedarfsgemeinschaften.json',
+  'leipzig-bedarfsgemeinschaften-insgesamt.json',
   'leipzig-einwohner-insgesamt.json',
   'leipzig-einwohnerdichte.json',
   'leipzig-gesamtflaeche.json',
   'leipzig-haushaltseinkommen.json',
   'leipzig-jugendquote.json',
   'leipzig-kraftfahrzeuge-insgesamt.json',
+  'leipzig-migranten.json',
+  'leipzig-mit-kindern.json',
   'leipzig-straftaten-insgesamt.json',
   'leipzig-unternehmen-insgesamt.json',
   'leipzig-wohnungen.json',
-  'leipzig-migranten.json',
 ]
 
 files.forEach(f => {
@@ -50,7 +51,7 @@ files.forEach(f => {
       });
   })
 
-  fs.writeFileSync(`${__dirname}/../data/${f}`, JSON.stringify({
+  fs.writeFileSync(`${__dirname}/../../public/data/${f}`, JSON.stringify({
     meta: contents.meta,
     data: result,
   }, null, 2))

@@ -73,5 +73,5 @@ Promise.all([scrapeIt(url_indoor_pool, {
     newList.push(element)
   }
 
-  fs.writeFileSync(`${__dirname}/../data/leipzig-swimming-pools.json`, JSON.stringify(newList, null, 2), 'utf8')
+  fs.writeFileSync(`${__dirname}../../public/data/leipzig-swimming-pools.json`, JSON.stringify(newList, null, 2), 'utf8')
 })

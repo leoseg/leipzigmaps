@@ -28,7 +28,7 @@ const dataOverlayEntries = {
     scale: chroma.scale('OrRd'),
     unit: 'Arbeitslose', 
   },
-  'bedarfsgemeinschaften': { 
+  'bedarfsgemeinschaften-insgesamt': { 
     title: 'Bedarfsgemeinschaften',
     scale: chroma.scale('YlGnBu'),
     unit: '',

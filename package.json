@@ -30,6 +30,10 @@
   },
   "type": "module",
   "scripts": {
+    "scrape-leipzig-statistik": "node ./src/scrapers/leipzig-statistik.js",
+    "scrape-swimming-pools": "node ./src/scrapers/leipzig-swimming-pools.js",
+    "transform-leipzig-statistik": "node ./src/transformers/leipzig-statistik.js",
+    "transform-leipzig-parks": "node ./src/scrapers/leipzig-parks.js",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
