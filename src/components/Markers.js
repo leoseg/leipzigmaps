@@ -55,11 +55,11 @@ const Markers = ({ showMarker, cache }) => <>
       renderLink={item => `https://www.openstreetmap.org/${item.type}/${item.id}`}
     />
   }
-  {showMarker.fitness_stuidos && 
+  {showMarker.fitness_studios && 
     <MapMarkers
-      data={cache.fitness_stuidos.elements}
+      data={cache.fitness_studios.elements}
       renderTooltip={item => <div>{item.tags.name}<br />(click for details)</div>}
-      renderIcon={item => <FontAwesomeIcon color={colors.fitness_stuidos} icon={faDumbbell} />}
+      renderIcon={item => <FontAwesomeIcon color={colors.fitness_studios} icon={faDumbbell} />}
       renderLink={item => `https://www.openstreetmap.org/${item.type}/${item.id}`}
     />
   }

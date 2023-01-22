@@ -51,7 +51,7 @@ Promise.all([scrapeIt(url_indoor_pool, {
     ...indoor_pool.data.list.map(sh => ({ ...sh, type: 'indoor_pool' })),
     ...outdoor_pool.data.list.map(sh => ({ ...sh, type: 'outdoor_pool' })),
   ]
-  
+
   let newList = [];
   for (let i = 0; i < data.length; i++) {
     let element = data[i];

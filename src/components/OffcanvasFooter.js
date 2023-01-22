@@ -4,24 +4,24 @@ import CreditsModal from "./CreditsModal";
 
 const OffcanvasFooter = () => {
   const [showCreditsModal, setShowCreditsModal] = useState(false);
-  
+
   return (
     <div style={{ fontSize: 12 }}>
-    <Button 
+    <Button
       style={{ textDecoration: 'none' }}
-      variant="link" 
-      size="sm" 
+      variant="link"
+      size="sm"
       onClick={() => setShowCreditsModal(true)}
     >Copyright &amp; Daten</Button>
     <br />
-    <Button 
+    <Button
       style={{ textDecoration: 'none' }}
-      variant="link" 
-      size="sm" 
+      variant="link"
+      size="sm"
       onClick={() => window.open('https://twitter.com/mrzmyr')}
     >🧑🏻‍💻 mrzmyr</Button>
     <br />
-    <CreditsModal 
+    <CreditsModal
       show={showCreditsModal}
       onHide={() => setShowCreditsModal(false)}
     />

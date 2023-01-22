@@ -8,7 +8,7 @@ const defaultPathOptions = {
 
 const Polygon = ({ geoframe, pathOptions, tooltip }) => {
   const [isHighlighted, setIsHighlighted] = useState(false);
-  
+
   return (
     <P
       pathOptions={{

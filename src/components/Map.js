@@ -18,68 +18,68 @@ import OwnLocationMarker from './OwnLocationMarker';
 import SwitchLine from "./SwitchLine";
 
 const dataOverlayEntries = {
-  'aerzte': { 
-    title: 'Ärzte', 
+  'aerzte': {
+    title: 'Ärzte',
     scale: chroma.scale('PuRd'),
-    unit: 'Ärzte', 
+    unit: 'Ärzte',
   },
-  'arbeitslose-insgesamt': { 
-    title: 'Arbeitslose', 
+  'arbeitslose-insgesamt': {
+    title: 'Arbeitslose',
     scale: chroma.scale('OrRd'),
-    unit: 'Arbeitslose', 
+    unit: 'Arbeitslose',
   },
-  'bedarfsgemeinschaften': { 
+  'bedarfsgemeinschaften': {
     title: 'Bedarfsgemeinschaften',
     scale: chroma.scale('YlGnBu'),
     unit: '',
   },
-  'einwohner-insgesamt': { 
+  'einwohner-insgesamt': {
     title: 'Population',
     scale: chroma.scale('BuPu'),
     unit: 'Menschen',
   },
-  'einwohnerdichte': { 
-    title: 'Bevölkerungsdichte', 
+  'einwohnerdichte': {
+    title: 'Bevölkerungsdichte',
     scale: chroma.scale('BuPu'),
     unit: 'Menschen',
   },
-  'gesamtflaeche': { 
-    title: 'Gesamtfläche', 
+  'gesamtflaeche': {
+    title: 'Gesamtfläche',
     scale: chroma.scale('Greys'),
     unit: 'km²'
   },
-  'haushaltseinkommen': { 
-    title: 'Einkommen', 
+  'haushaltseinkommen': {
+    title: 'Einkommen',
     scale: chroma.scale('PuBu'),
     min: 1000,
     unit: '€'
   },
   'jugendquote': {
-    title: 'Alter', 
+    title: 'Alter',
     scale: chroma.scale('YlOrBr'),
     unit: '',
   },
-  'kraftfahrzeuge-insgesamt': { 
-    title: 'Kraftfahrzeuge', 
+  'kraftfahrzeuge-insgesamt': {
+    title: 'Kraftfahrzeuge',
     scale: chroma.scale('Purples'),
     unit: 'Fahrzeuge'
   },
-  'migranten': { 
-    title: 'Zugewanderte', 
+  'migranten': {
+    title: 'Zugewanderte',
     scale: chroma.scale('GnBu'),
     unit: 'Zugewanderte',
   },
-  'straftaten-insgesamt': { 
-    title: 'Straftaten', 
+  'straftaten-insgesamt': {
+    title: 'Straftaten',
     scale: chroma.scale('YlOrRd'),
     unit: 'Straftaten',
   },
-  'unternehmen-insgesamt': { 
-    title: 'Unternehmen', 
+  'unternehmen-insgesamt': {
+    title: 'Unternehmen',
     scale: chroma.scale('Blues'),
     unit: 'Unternehmen',
   },
-  'wohnungen': { 
+  'wohnungen': {
     title: 'Wohnungen',
     scale: chroma.scale('RdPu')
   },
@@ -87,7 +87,7 @@ const dataOverlayEntries = {
 
 const center = [51.340199, 12.430103];
 
-function Hooks() {  
+function Hooks() {
   useMapEvent('click', (e) => {
     console.log(e.latlng)
   })
@@ -119,14 +119,15 @@ const Map = () => {
   const [selectedDataKey, setSelectedDataKey] = useState(null);
   const [selectedX, setSelectedX] = useState(null);
   const [selectedY, setSelectedY] = useState(null);
+  const [showTotal, setShowTotal] = useState(false);
 
   const toggleDataOverlay = () => {
     setShowMarker({ ...showMarker, data_overlay: !showMarker.data_overlay })
   }
-  
+
   const selectDataOverlayCategory = (key) => {
     setSelectedDataKey(key)
-    
+
     if(!cache[key]) {
       setLoadings({ ...loadings, [key]: true })
       fetch(`${process.env.PUBLIC_URL}/data/leipzig-${key}.json`)
@@ -138,9 +139,9 @@ const Map = () => {
         });
     } else {
       setShowMarker({ ...showMarker, [key]: !showMarker[key] })
-    }    
+    }
   }
-  
+
   const toggleMarkers = (key) => {
     if(!cache[key]) {
       setLoadings({ ...loadings, [key]: true })
@@ -187,15 +188,22 @@ const Map = () => {
     cache[selectedDataKey][selectedX] &&
     cache[selectedDataKey][selectedX][selectedY]
   ) {
+    const isPercent = selectedY && (selectedY.indexOf("Anteil") >=0 || selectedY.indexOf("anteil") >=0 || selectedY.indexOf("Quote") >= 0 || selectedY.indexOf("quote") >= 0)
+    const aggFun = (values) => showTotal ? ((isPercent && values.length > 0) ? (Math.round(values.reduce((sum, elem) => sum + elem.value, 0) / values.length)) : values.reduce((sum, elem) => sum + elem.value, 0)) : 0
     databasis = cache[selectedDataKey][selectedX][selectedY];
-    const selectedYValues = Object.keys(cache[selectedDataKey]).map(key => 
-      cache[selectedDataKey][key][selectedY] ? cache[selectedDataKey][key][selectedY].map(d => d.value) : 0
+    const selectedYValues = Object.keys(cache[selectedDataKey]).map(key =>
+      cache[selectedDataKey][key][selectedY] ?
+        (
+          showTotal ?
+            aggFun(cache[selectedDataKey][key][selectedY])
+            : cache[selectedDataKey][key][selectedY].map(d => d.value)
+        ) : 0
     ).flat(1)
     databasisMax = Math.max(...selectedYValues)
     databasisMaxYears = []
     Object.keys(cache[selectedDataKey]).forEach(key => {
       if(
-        cache[selectedDataKey][key][selectedY] && 
+        cache[selectedDataKey][key][selectedY] &&
         cache[selectedDataKey][key][selectedY].map(d => d.value).includes(databasisMax)
       ) {
         databasisMaxYears.push(key)
@@ -207,12 +215,12 @@ const Map = () => {
 
   // const dataOverlayScale = chroma.scale('Spectral');
   const dataOverlayScale = dataOverlayEntries[selectedDataKey] ? dataOverlayEntries[selectedDataKey].scale : null;
-  
+
   return (
     <>
-    <MapContainer 
+    <MapContainer
       style={{ height: '100vh' }}
-      center={center} 
+      center={center}
       zoom={12}
       tap={false}
     >
@@ -227,46 +235,47 @@ const Map = () => {
       <Hooks />
       <Markers showMarker={showMarker} cache={cache} />
       {
-        showMarker.data_overlay && 
-        !loadings.districts && 
-        <DataOverlay 
+        showMarker.data_overlay &&
+        !loadings.districts &&
+        <DataOverlay
           dataOverlayEntries={dataOverlayEntries}
           scale={dataOverlayScale}
           cache={cache}
           selectedDataKey={selectedDataKey}
+          showTotal={showTotal}
           selectedX={selectedX}
           selectedY={selectedY}
         />
       }
       {
-        showMarker.own_location && 
+        showMarker.own_location &&
         <OwnLocationMarker />
       }
     </MapContainer>
       {
-        !showOffcanvas && 
-        <div style={{ 
-          position: 'absolute', 
-          zIndex: 999, 
-          right: 20, 
-          bottom: 20, 
+        !showOffcanvas &&
+        <div style={{
+          position: 'absolute',
+          zIndex: 999,
+          right: 20,
+          bottom: 20,
           boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px'
         }}>
-          <Button 
-            style={{ 
+          <Button
+            style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               width: 60,
               height: 60,
             }}
-            size="lg" 
+            size="lg"
             onClick={() => setShowOffcanvas(true)}
           ><FontAwesomeIcon size="lg" icon={faCog} /></Button>
         </div>
       }
       {
-        showMarker.data_overlay && 
+        showMarker.data_overlay &&
         <div style={{ position: 'absolute', fontFamily: 'monospace', zIndex: 999, left: 10, bottom: 10, padding: 10, borderRadius: 10, background: 'white', cursor: 'pointer' }} onClick={() => setShowOffcanvas(true)}>
           <OverlayTrigger
             placement="top"
@@ -281,10 +290,10 @@ const Map = () => {
               <ColorScale scale={dataOverlayScale} data={databasis} min={databasisMin} max={databasisMax} />
         </div>
       }
-      <Offcanvas 
-        show={showOffcanvas} 
-        onHide={() => setShowOffcanvas(false)} 
-        backdrop={false} 
+      <Offcanvas
+        show={showOffcanvas}
+        onHide={() => setShowOffcanvas(false)}
+        backdrop={false}
         placement={isMobile ? 'bottom' : 'end'}
         style={{
           height: isMobile ? '40vh' : '100vh',
@@ -302,40 +311,42 @@ const Map = () => {
         >
           {loadings.districts && <div style={{ textAlign: 'center', padding: 10 }}><Spinner animation="border" size="sm" /></div>}
           {!loadings.districts &&
-          <>
-            <SwitchLine
-              loading={loadings.data_overlay}
-              checked={showMarker.data_overlay}
-              onChange={e => toggleDataOverlay()}
-              icon={<FontAwesomeIcon icon={faChartPie} />}
-              label="Details zu Ortsteilen anzeigen"
-            />
-          {
-            showMarker.data_overlay &&  
             <>
-              <DataOverlayOptions
-                dataEntries={dataOverlayEntries}
-                cache={cache}
-                selectedDataKey={selectedDataKey}
-                selectedX={selectedX}
-                selectedY={selectedY}
-                setSelectedX={setSelectedX}
-                setSelectedY={setSelectedY}
-                selectDataOverlayCategory={selectDataOverlayCategory}
+              <SwitchLine
+                loading={loadings.data_overlay}
+                checked={showMarker.data_overlay}
+                onChange={e => toggleDataOverlay()}
+                icon={<FontAwesomeIcon icon={faChartPie} />}
+                label="Details zu Ortsteilen anzeigen"
+              />
+              {
+                showMarker.data_overlay &&
+                <>
+                  <DataOverlayOptions
+                    dataEntries={dataOverlayEntries}
+                    cache={cache}
+                    selectedDataKey={selectedDataKey}
+                    showTotal={showTotal}
+                    selectedX={selectedX}
+                    selectedY={selectedY}
+                    setSelectedX={setSelectedX}
+                    setSelectedY={setSelectedY}
+                    setShowTotal={setShowTotal}
+                    selectDataOverlayCategory={selectDataOverlayCategory}
+                    loadings={loadings}
+                  />
+                </>
+              }
+              <MarkerToggles
+                showMarker={showMarker}
+                toggleMarkers={toggleMarkers}
+                setShowMarker={setShowMarker}
                 loadings={loadings}
               />
+              <div style={{ height: 1, background: '#eee', marginTop: 10, marginBottom: 10 }} />
             </>
           }
-          <MarkerToggles 
-            showMarker={showMarker}
-            toggleMarkers={toggleMarkers}
-            setShowMarker={setShowMarker}
-            loadings={loadings}
-          />
-          <div style={{ height: 1, background: '#eee', marginTop: 10, marginBottom: 10 }} />
-          </>
-          }
-          
+
           <OffcanvasFooter />
         </Offcanvas.Body>
       </Offcanvas>

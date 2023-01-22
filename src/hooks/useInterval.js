@@ -14,7 +14,7 @@ function useInterval(callback, delay) {
       return () => window.clearInterval(intervalRef.current);
     }
   }, [delay]);
-  
+
   return intervalRef;
 }
 

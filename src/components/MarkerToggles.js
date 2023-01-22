@@ -9,7 +9,7 @@ export const colors = {
   tram_stops: '#1a73e8',
   own_location: '#1a73e8',
   swimming_pools: '#7986cb',
-  fitness_stuidos: '#78909c',
+  fitness_studios: '#78909c',
   daycares: '#f06292',
   playgrounds: '#f06292',
   bike_lanes: '#5565dd',
@@ -23,11 +23,11 @@ const MarkerToggles = ({
   toggleMarkers,
   setShowMarker,
   loadings,
-}) => {  
+}) => {
   return (
     <div>
-      { 
-        "geolocation" in navigator && 
+      {
+        "geolocation" in navigator &&
         <SwitchLine
           loading={loadings.own_location}
           checked={showMarker.own_location}
@@ -65,10 +65,10 @@ const MarkerToggles = ({
         label="Swimming Pools anzeigen"
       />
       <SwitchLine
-        loading={loadings.fitness_stuidos}
-        checked={showMarker.fitness_stuidos}
-        onChange={e => toggleMarkers('fitness_stuidos')}
-        icon={<FontAwesomeIcon color={colors.fitness_stuidos} icon={faDumbbell} />}
+        loading={loadings.fitness_studios}
+        checked={showMarker.fitness_studios}
+        onChange={e => toggleMarkers('fitness_studios')}
+        icon={<FontAwesomeIcon color={colors.fitness_studios} icon={faDumbbell} />}
         label="Fitness Studios anzeigen"
       />
       <SwitchLine

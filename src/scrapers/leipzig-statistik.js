@@ -4,7 +4,8 @@ import slugify from '@sindresorhus/slugify';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
-const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
+const prefix = `https://statistik.leipzig.de/opendata/api/values?format=json`;
+//const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
 const urls = [
   `${prefix}&kategorie_nr=2&rubrik_nr=4&periode=y`, // Einwohner mit Migrationshintergund
   `${prefix}&kategorie_nr=2&rubrik_nr=8&periode=y`, // Einwohnerdichte
@@ -26,7 +27,7 @@ const urls = [
   for (let i = 0; i < urls.length; i++) {
     const response = await fetch(urls[i]);
     const data = await response.json();
-  
+
     let filename = `leipzig-${slugify(data[0].name)}`
     console.log(filename, 'saved')
     fs.writeFileSync(`${__dirname}../../public/data-raw/${filename}.json`, JSON.stringify({
@@ -35,6 +36,6 @@ const urls = [
         title: data[0].name
       },
       data
-    }, null, 2))    
+    }, null, 2))
   }
 })()

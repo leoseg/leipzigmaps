@@ -11,7 +11,7 @@ const SwitchLine = ({
 }) => {
   const spinner = <Spinner animation="border" size="sm" />;
   const [isActive, setIsActive] = useState(false);
-  
+
   return (
     <div
       onMouseEnter={() => setIsActive(true)}
@@ -20,8 +20,8 @@ const SwitchLine = ({
       onTouchEnd={() => setIsActive(false)}
       onTouchCancel={() => setIsActive(false)}
       onClick={() => onChange()}
-      style={{ 
-        display: 'flex', 
+      style={{
+        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         fontSize: '1.1rem',

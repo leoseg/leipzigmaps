@@ -11,7 +11,7 @@ const MapMarkers = ({ data, renderTooltip, renderIcon, renderLink = null }) => {
       iconSize: [20, 20],
       html: renderToString(renderIcon(item))
     });
-    
+
     const popup = (
       <Popup>
         <div style={{ fontSize: '1rem' }}>
@@ -28,9 +28,9 @@ const MapMarkers = ({ data, renderTooltip, renderIcon, renderLink = null }) => {
         </div>
       </Tooltip>
     )
-    
+
     return (
-      <Marker 
+      <Marker
         key={index}
         position={[item.lat, item.lon]}
         icon={myIcon}

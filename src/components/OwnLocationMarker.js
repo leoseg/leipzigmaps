@@ -18,7 +18,7 @@ const OwnLocationMarker = () => {
         <FontAwesomeIcon
           icon={faCircle}
           size='lg'
-          style={{ 
+          style={{
             animation: 'pulseDot 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite',
             color: colors.own_location,
             border: '2px solid #FFF',
@@ -52,11 +52,11 @@ const OwnLocationMarker = () => {
   } = usePosition(watch, {enableHighAccuracy: true});
 
   console.log(error)
-  
+
   if(error) return <div style={{ color: '#fff', padding: 5, backgroundColor: 'red', position: 'absolute', top: 0, right: 0, zIndex: 9999 }}>{error}</div>
-  
+
   return (
-    <Marker 
+    <Marker
       position={[latitude || 0, longitude || 0]}
       icon={myIcon}
     >
