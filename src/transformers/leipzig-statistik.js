@@ -3,25 +3,29 @@ import fs from 'fs';
 const __dirname = new URL('.', import.meta.url).pathname;
 
 const files = [
-  'leipzig-aerzte.json',
-  'leipzig-arbeitslose-insgesamt.json',
-//  'leipzig-bedarfsgemeinschaften.json',
-  'leipzig-einwohner-insgesamt.json',
-  'leipzig-einwohnerdichte.json',
-  'leipzig-gesamtflaeche.json',
-  'leipzig-haushaltseinkommen.json',
-  'leipzig-jugendquote.json',
-  'leipzig-kraftfahrzeuge-insgesamt.json',
-  'leipzig-migranten.json',
-  'leipzig-mit-kindern.json',
-  'leipzig-straftaten-insgesamt.json',
-  'leipzig-unternehmen-insgesamt.json',
+  'leipzig-aerzte.json', 
+  'leipzig-arbeitslose-insgesamt.json', 
+  'leipzig-bedarfsgemeinschaften.json', 
+  'leipzig-einwohner-insgesamt.json', 
+  'leipzig-einwohnerdichte.json', 
+  'leipzig-gebaeude-mit-wohnungen-insgesamt.json', 
+  'leipzig-handwerksbetriebe-insgesamt.json', 
+  'leipzig-jugendquote.json', 
+  'leipzig-kraftfahrzeuge-insgesamt.json', 
+  'leipzig-landwirtschaftsflaeche.json', 
+  'leipzig-lebensmittelgewerbe.json', 
+  'leipzig-migranten.json', 
+  'leipzig-mit-1-person.json', 
+  'leipzig-persoenliches-einkommen.json', 
+  'leipzig-straftaten-insgesamt.json', 
+  'leipzig-unternehmen-insgesamt.json', 
+  'leipzig-wohnflaeche-insgesamt.json', 
   'leipzig-wohnungen.json',
 ]
 
 files.forEach(f => {
 
-  const contents = JSON.parse(fs.readFileSync(`${__dirname}/../../public/data-raw/${f}`));
+  const contents = JSON.parse(fs.readFileSync(`${__dirname}../../public/data-raw/${f}`));
   const data = contents.data;
 
   const getUnique = (data, k) => {

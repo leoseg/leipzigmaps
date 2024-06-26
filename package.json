@@ -35,7 +35,7 @@
     "transform-leipzig-statistik": "node ./src/transformers/leipzig-statistik.js",
     "transform-leipzig-parks": "node ./src/scrapers/leipzig-parks.js",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "react-scripts start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
