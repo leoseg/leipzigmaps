@@ -5,7 +5,7 @@ import slugify from '@sindresorhus/slugify';
 const __dirname = new URL('.', import.meta.url).pathname;
 
 const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
-//const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
+
 const urls = [
   `${prefix}&kategorie_nr=2&rubrik_nr=5&periode=y`, // Einwohner mit Migrationshintergund
   `${prefix}&kategorie_nr=2&rubrik_nr=9&periode=y`, // Einwohnerdichte
