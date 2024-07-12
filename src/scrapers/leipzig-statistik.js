@@ -27,6 +27,14 @@ const urls = [
 ]
 
 ;(async () => {
+  try {
+    if (!fs.existsSync(save_dir)) {
+      fs.mkdirSync(save_dir);
+    }
+  } catch (err) {
+  console.error(err);
+  }
+
   for (let i = 0; i < urls.length; i++) {
     const response = await fetch(urls[i]);
     const data = await response.json();
