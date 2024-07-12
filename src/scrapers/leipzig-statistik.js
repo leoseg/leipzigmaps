@@ -5,7 +5,7 @@ import slugify from '@sindresorhus/slugify';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-const __save_dir = join(dirname(fileURLToPath(import.meta.url)), '../..', 'public/data-raw');
+const save_dir = join(dirname(fileURLToPath(import.meta.url)), '../..', 'public/data-raw');
 
 const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
 
@@ -33,7 +33,7 @@ const urls = [
     if (data && data.length > 0) {
       let filename = `leipzig-${slugify(data[0].name)}`
       console.log(filename, 'saved')
-	  fs.writeFileSync(join(__save_dir, `${filename}.json`), JSON.stringify({
+	  fs.writeFileSync(join(save_dir, `${filename}.json`), JSON.stringify({
         meta: {
           source: urls[i],
           title: data[0].name
