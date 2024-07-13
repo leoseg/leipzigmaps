@@ -2,10 +2,13 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 import slugify from '@sindresorhus/slugify';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const save_dir = join(dirname(fileURLToPath(import.meta.url)), '../..', 'public/data-raw');
 
 const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
-//const prefix = `https://statistik.leipzig.de/opendata/api/kdvalues?format=json`;
+
 const urls = [
   `${prefix}&kategorie_nr=2&rubrik_nr=5&periode=y`, // Einwohner mit Migrationshintergund
   `${prefix}&kategorie_nr=2&rubrik_nr=9&periode=y`, // Einwohnerdichte
@@ -24,21 +27,31 @@ const urls = [
 ]
 
 ;(async () => {
+  try {
+    if (!fs.existsSync(save_dir)) {
+      fs.mkdirSync(save_dir);
+    }
+  } catch (err) {
+  console.error(err);
+  }
+
+  const num_digits = Math.ceil(Math.log10(urls.length))
   for (let i = 0; i < urls.length; i++) {
     const response = await fetch(urls[i]);
+    process.stdout.write('[' + String(i+1).padStart(num_digits, '0') + '/' + urls.length + '] \"' + urls[i] + '\": ')
     const data = await response.json();
     if (data && data.length > 0) {
       let filename = `leipzig-${slugify(data[0].name)}`
-      console.log(filename, 'saved')
-      fs.writeFileSync(`${__dirname}../../public/data-raw/${filename}.json`, JSON.stringify({
+	  fs.writeFileSync(join(save_dir, `${filename}.json`), JSON.stringify({
         meta: {
           source: urls[i],
           title: data[0].name
         },
         data
       }, null, 2))  
+	  console.log(`data saved to ${filename}.json `)
     } else {
-      console.log("No data found for " + urls[i])
+      console.log("no data found ")
     }
   }
 })()
