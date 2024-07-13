@@ -32,7 +32,7 @@ const MapMarkers = ({ data, renderTooltip, renderIcon, renderLink = null }) => {
     return (
       <Marker
         key={index}
-        position={[item.lat, item.lon]}
+        position={[item.lat || (item.center && item.center.lat), item.lon || (item.center && item.center.lon)]}
         icon={myIcon}
         eventHandlers={{
           click: () => renderLink !== null && !isMobile ? window.open(renderLink(item)) : {}

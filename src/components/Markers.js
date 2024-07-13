@@ -65,10 +65,10 @@ const Markers = ({ showMarker, cache }) => <>
   }
   {showMarker.daycares && 
     <MapMarkers
-      data={cache.daycares}
-      renderTooltip={item => <div>{item.name}<br />{item.address ? item.address.full : null}</div>}
+      data={cache.daycares.elements}
+      renderTooltip={item => <div>{item.tags.name}<br />(click for details)</div>}
       renderIcon={item => <FontAwesomeIcon color={colors.daycares} icon={faBaby} />}
-      renderLink={item => item.address ? `https://www.openstreetmap.org/search?query=${item.address.full}` : '#'}
+      renderLink={item => `https://www.openstreetmap.org/${item.type}/${item.id}`}
     />
   }
   {showMarker.markets && 
@@ -84,7 +84,7 @@ const Markers = ({ showMarker, cache }) => <>
       data={cache.playgrounds}
       renderTooltip={item => <div>{item.name}<br />{item.location}</div>}
       renderIcon={item => <FontAwesomeIcon color={colors.playgrounds} icon={faChild} />}
-      renderLink={item => `https://www.openstreetmap.org/search?query=${item.lat},${item.lon}`}
+      renderLink={item => `https://www.openstreetmap.org/search?query=${item.lat || (item.center && item.center.lat)},${item.lon || (item.center && item.center.lon)}`}
     />
   }
   {showMarker.supermarkets && 
@@ -92,7 +92,7 @@ const Markers = ({ showMarker, cache }) => <>
       data={cache.supermarkets.elements}
       renderTooltip={item => <div>{item.tags.name}<br />{item.tags.organic ? `organic: ${item.tags.organic}`: ''}</div>}
       renderIcon={item => <FontAwesomeIcon color={item.tags.organic ? 'green' : colors.supermarkets} icon={faShoppingBasket} />}
-      renderLink={item => `https://www.openstreetmap.org/search?query=${item.lat},${item.lon}`}
+      renderLink={item => `https://www.openstreetmap.org/search?query=${item.lat || (item.center && item.center.lat)},${item.lon || (item.center && item.center.lon)}`}
     />
   }
   {showMarker.parks && 
@@ -100,7 +100,7 @@ const Markers = ({ showMarker, cache }) => <>
       data={cache.parks.filter(p => p.tags?.name)}
       renderTooltip={item => item.tags.name}
       renderIcon={item => <FontAwesomeIcon color={colors.parks} icon={faTree} />}
-      renderLink={item => `https://www.openstreetmap.org/search?query=${item.lat},${item.lon}`}
+      renderLink={item => `https://www.openstreetmap.org/search?query=${item.lat || (item.center && item.center.lat)},${item.lon || (item.center && item.center.lon)}`}
     />
   }
 </>

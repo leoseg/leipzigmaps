@@ -18,7 +18,7 @@ const CreditsModal = (props) => {
           <li><a href="https://www.openstreetmap.org/copyright/en">© OpenStreetMap contributors</a><br /></li>
           <li><a href="https://www.maptiler.com/copyright/">&copy; MapTiler</a></li>
           <li><a href="https://www.cyclosm.org">&copy; cyclosm</a></li>
-          <li><a href="https://github.com/mrzmyr/leipzig-maps">GitHub Source Code</a><br /></li>
+          <li><a href="https://github.com/CodeforLeipzig/leipzig-maps">GitHub Source Code</a><br /></li>
         </ul>
         <p>Ein Teil der Beschriftungen kommen aus anderen Quellen und sind daher nicht gegendert.</p>
       </Modal.Body>

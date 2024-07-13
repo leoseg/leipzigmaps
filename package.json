@@ -36,7 +36,7 @@
     "transform-leipzig-parks": "node ./src/scrapers/leipzig-parks.js",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
-    "build": "react-scripts build",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",

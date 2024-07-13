@@ -18,8 +18,8 @@ const OffcanvasFooter = () => {
       style={{ textDecoration: 'none' }}
       variant="link"
       size="sm"
-      onClick={() => window.open('https://twitter.com/mrzmyr')}
-    >🧑🏻‍💻 mrzmyr</Button>
+      onClick={() => window.open('https://github.com/CodeforLeipzig/leipzigmaps')}
+    >🧑🏻‍💻 mrzmyr / Code for Leipzig</Button>
     <br />
     <CreditsModal
       show={showCreditsModal}
