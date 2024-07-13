@@ -35,12 +35,13 @@ const urls = [
   console.error(err);
   }
 
+  const num_digits = Math.ceil(Math.log10(urls.length))
   for (let i = 0; i < urls.length; i++) {
     const response = await fetch(urls[i]);
+    process.stdout.write('[' + String(i+1).padStart(num_digits, '0') + '/' + urls.length + '] \"' + urls[i] + '\": ')
     const data = await response.json();
     if (data && data.length > 0) {
       let filename = `leipzig-${slugify(data[0].name)}`
-      console.log(filename, 'saved')
 	  fs.writeFileSync(join(save_dir, `${filename}.json`), JSON.stringify({
         meta: {
           source: urls[i],
@@ -48,8 +49,9 @@ const urls = [
         },
         data
       }, null, 2))  
+	  console.log(`data saved to ${filename}.json `)
     } else {
-      console.log("No data found for " + urls[i])
+      console.log("no data found ")
     }
   }
 })()
