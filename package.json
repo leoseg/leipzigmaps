@@ -39,7 +39,7 @@
     "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "yarn run build",
     "deploy": "gh-pages -d build -r https://github.com/CodeforLeipzig/leipzigmaps.git"
   },
   "homepage": "https://codeforleipzig.github.io/leipzigmaps/",

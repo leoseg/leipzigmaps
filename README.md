@@ -69,6 +69,12 @@ This section should list any major frameworks that you built your project using.
    yarn run transform-leipzig-parks
    ```
 
+### Deployment
+   ```JS
+   yarn run predeploy
+   yarn run deploy
+   ```
+
 ## Roadmap
 See the [open issues](https://github.com/CodeforLeipzig/issues) for a list of proposed features (and known issues).
 
