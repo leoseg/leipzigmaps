@@ -131,6 +131,7 @@ Project Link: [https://github.com/CodeforLeipzig/leipzig-maps](https://github.co
    * public/data/leipzig-train-stops.json
    * public/data/leipzig-tram-stops.json
  * Kindergärten
+   * tracked [here](https://github.com/CodeforLeipzig/leipzigmaps/issues/28) 
    * public/data/leipzig-daycares.json
  * Fitnessstudios
    * public/data/leipzig-fitness-studios.json
