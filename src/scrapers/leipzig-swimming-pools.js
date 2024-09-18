@@ -8,70 +8,75 @@ const url_outdoor_pool = `${domain}/freizeit-kultur-und-tourismus/sport/sportsta
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
-Promise.all([scrapeIt(url_indoor_pool, {
-    list: {
-      listItem: '.address-list-item',
-      data: {
-        title: {
-          selector: '.link_intern',
-          attr: 'title'
-        },
-        address: {
-          selector: '.list.left',
-          convert: address => address.split('\n').map(d => d.trim()).filter(d => !!d)
-        },
-        link: {
-          attr: "href",
-          selector: '.link_intern',
-          convert: href => `${domain}/${href}`
-        }
-      }
-    }
-}), scrapeIt(url_outdoor_pool, {
+const scrapeDetailsUrl = {
   list: {
-    listItem: '.address-list-item',
+    listItem: '.project-attributes',
     data: {
       title: {
-        selector: '.link_intern',
-        attr: 'title'
+        selector: 'h3 a'
       },
-      address: {
-        selector: '.list.left',
-        convert: address => address.split('\n').map(d => d.trim()).filter(d => !!d)
-      },
-      link: {
-        attr: "href",
-        selector: '.link_intern',
-        convert: href => `${domain}/${href}`
+      detailsUrl: {
+        selector: 'h3 a',
+        attr: "href"
       }
     }
   }
-})]).then(async ([indoor_pool, outdoor_pool]) => {
-  let data = [
-    ...indoor_pool.data.list.map(sh => ({ ...sh, type: 'indoor_pool' })),
-    ...outdoor_pool.data.list.map(sh => ({ ...sh, type: 'outdoor_pool' })),
-  ]
+}
 
-  let newList = [];
-  for (let i = 0; i < data.length; i++) {
-    let element = data[i];
-    let q = `${element.address.join(' ').replace(/ \(.*\)/, '').replace('an der Schwimmhalle Nord', '').replace('Vollbedingstraße', 'Volbedingstraße').replace('Kirschbergstraße 84', 'Schwimmhalle Mitte')}`;
-    console.log(q)
-    let resp = await search(q)
-    let search_results = resp.filter(r => ['water_park', 'sports_centre'].includes(r.type));
+const scrapeDetailsData = {
+  address: {
+    selector: '.t3booking-t3booking-main-content p',
+    eq: 0, 
+    convert: value => value.replace(' 04', ', 04').replace('Im Stadtplan anzeigen', '')
+  }
+}
+
+const enrichWithCoords = async (element) => {
+  console.log('search for ' + element.address)
+  try {
+    const resp = await search(element.address)
+    const search_results = resp.filter(r => ['water_park', 'sports_centre'].includes(r.type));
     if(search_results.length > 0) {
-      element = {
+      return {
         ...element,
         address: resp[0].address,
         lat: resp[0].lat,
         lon: resp[0].lon
-      }
+      }      
     } else {
       console.log(element.title, element.address, 'could not be found')
       console.log(resp)
+      return element;
     }
-    newList.push(element)
-  }
+  } catch(e) {
+    console.log(element.title, element.address, 'could not be resolved')
+    console.log(resp)
+    return element;
+  }   
+}
 
-  fs.writeFileSync(`${__dirname}../../public/data/leipzig-swimming-pools.json`, JSON.stringify(newList, null, 2), 'utf8')
-})
+const scrapeDetailsUrlIndoor = scrapeIt(url_indoor_pool, scrapeDetailsUrl);
+const scrapeDetailsUrlOutdoor = scrapeIt(url_outdoor_pool, scrapeDetailsUrl);
+
+const handleScrapeResponse = async ([indoor_pool, outdoor_pool]) => {
+  const data = [
+    ...indoor_pool.data.list.map(sh => ({ ...sh, type: 'indoor_pool' })),
+    ...outdoor_pool.data.list.map(sh => ({ ...sh, type: 'outdoor_pool' })),
+  ]
+  const promises = [];
+  for (let i = 0; i < data.length; i++) {
+    const element = data[i];
+    const detailsUrl = `${domain}${element.detailsUrl}`;
+    const details = await scrapeIt(detailsUrl, scrapeDetailsData);
+    const result = await enrichWithCoords(details.data);
+    promises.push({
+      title: element.title,
+      ...result,
+      link: detailsUrl
+    });
+  }
+  const details = await Promise.all(promises);
+  fs.writeFileSync(`${__dirname}../../public/data/leipzig-swimming-pools.json`, JSON.stringify(details), 'utf8')
+};
+
+Promise.all([scrapeDetailsUrlIndoor, scrapeDetailsUrlOutdoor]).then(handleScrapeResponse)
