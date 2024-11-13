@@ -1,9 +1,6 @@
 name: Publish to Github Pages
 run-name: ${{github.actor}} is deploying to Github Pages
-on:
-  push:
-    branches:
-      - master
+on: [push]
 permissions:
   contents: write
 jobs:
