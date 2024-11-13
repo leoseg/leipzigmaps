@@ -11,8 +11,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Install and Build
         run: |
-          npm install
-          npm run build
+          yarn
+          yarn run scrape-leipzig-statistik
+          yarn run transform-leipzig-statistik
+          yarn run scrape-swimming-pools
+          yarn run transform-leipzig-parks
+          yarn run predeploy
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
